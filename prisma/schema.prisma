@@ -1,0 +1,98 @@
+// Prisma schema for Local Labour Connect
+// Phase 1 — Database (Prisma + PostgreSQL)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ─────────────────────────────────────────────────────────────────
+enum Role {
+  LABOUR
+  CONTRACTOR
+  ADMIN
+}
+
+enum JobStatus {
+  OPEN
+  CLOSED
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ─── User Model ─────────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String   @unique
+  role      Role
+  city      String
+  password  String?  // hashed, for credentials auth (Phase 2)
+  createdAt DateTime @default(now())
+  banned    Boolean  @default(false)
+
+  labourProfile     LabourProfile?
+  contractorProfile ContractorProfile?
+  jobsPosted        Job[]            @relation("ContractorJobs")
+  applications      Application[]
+}
+
+// ─── LabourProfile (1:1 with User, role=LABOUR) ─────────────────────────────
+model LabourProfile {
+  id         String  @id @default(uuid())
+  userId     String  @unique
+  skill      String
+  experience Int     // years
+  rating     Float   @default(0)
+  verified   Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─── ContractorProfile (1:1 with User, role=CONTRACTOR) ─────────────────────
+model ContractorProfile {
+  id          String  @id @default(uuid())
+  userId      String  @unique
+  companyName String
+  rating      Float   @default(0)
+  verified    Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─── Job Model ──────────────────────────────────────────────────────────────
+model Job {
+  id            String    @id @default(uuid())
+  contractorId  String
+  title         String
+  description   String
+  skillRequired String
+  city          String
+  wage          Int
+  status        JobStatus @default(OPEN)
+  createdAt     DateTime  @default(now())
+
+  contractor   User          @relation("ContractorJobs", fields: [contractorId], references: [id], onDelete: Cascade)
+  applications Application[]
+}
+
+// ─── Application Model (unique jobId + labourId to prevent duplicates) ──────
+model Application {
+  id        String            @id @default(uuid())
+  jobId     String
+  labourId  String
+  status    ApplicationStatus @default(PENDING)
+
+  job    Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  labour User @relation(fields: [labourId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, labourId])
+}
