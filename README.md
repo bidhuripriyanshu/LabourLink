@@ -1,4 +1,4 @@
-# 🏗️ Local Labour Connect
+# 🏗️ LabourLink
 
 > A platform connecting **daily-wage labourers** with **local contractors** — built with Next.js, PostgreSQL, Prisma & NextAuth.
 
@@ -29,23 +29,23 @@
 
 ```mermaid
 flowchart TB
-    subgraph Client ["🖥️ Client (Browser / Mobile Web)"]
+    subgraph Client [" Client (Browser / Mobile Web)"]
         U["User: Labour / Contractor / Admin"]
     end
 
-    subgraph NextServer ["⚙️ Next.js Server (App Router)"]
+    subgraph NextServer [" Next.js Server (App Router)"]
         SC["Server Components\n(data fetching)"]
         SA["Server Actions /\nRoute Handlers\n(mutations)"]
         MW["Middleware\n(RBAC gate)"]
         AUTH["NextAuth\n(JWT sessions)"]
     end
 
-    subgraph DataLayer ["💾 Data Layer"]
+    subgraph DataLayer [" Data Layer"]
         PRISMA["Prisma ORM"]
         DB[("PostgreSQL\n(Supabase)")]
     end
 
-    subgraph Phase2 ["🔮 Phase 2 Services"]
+    subgraph Phase2 [" Phase 2 Services"]
         SMS["SMS / OTP Provider"]
         MAPS["Maps API"]
         NOTIF["Notification Provider"]
@@ -84,7 +84,7 @@ flowchart LR
     PRISMA --> DB[("PostgreSQL\n(Supabase)")]
     AUTH --> DB
 
-    subgraph UI_Components ["🧩 Components (/components)"]
+    subgraph UI_Components [" Components (/components)"]
         NAV["Navbar"]
         FOOT["Footer"]
         CARDS["UI Cards / Buttons"]
@@ -121,18 +121,18 @@ graph TD
         A3["ROLE_DASHBOARDS map"]
     end
 
-    subgraph Data_Access ["💾 Data Access"]
+    subgraph Data_Access [" Data Access"]
         D1["/lib/prisma.js\nPrisma client singleton"]
         D2["/prisma/schema.prisma\nModels · Enums · Relations"]
     end
 
-    subgraph Middleware_Module ["🛡️ Middleware"]
+    subgraph Middleware_Module [" Middleware"]
         M1["middleware.js\nRBAC route guard"]
         M2["PUBLIC_PATHS · AUTH_PATHS"]
         M3["getRequiredRole()"]
     end
 
-    subgraph UI_Module ["🎨 UI Components"]
+    subgraph UI_Module [" UI Components"]
         C1["Navbar.js"]
         C2["Footer.js"]
         C3["SessionProvider.js"]
@@ -448,7 +448,7 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    subgraph Public ["🌐 Public Routes"]
+    subgraph Public [" Public Routes"]
         ROOT["/\n(Landing Page)"]
         JOBS["/jobs\n(Browse Jobs)"]
         LOGIN["/login"]
@@ -456,23 +456,23 @@ graph TD
         REGISTER["/register"]
     end
 
-    subgraph Auth_API ["🔑 Auth API"]
+    subgraph Auth_API [" Auth API"]
         AUTHAPI["/api/auth/[...nextauth]\n(NextAuth handlers)"]
     end
 
-    subgraph Labour_Dashboard ["👷 Labour Dashboard"]
+    subgraph Labour_Dashboard [" Labour Dashboard"]
         LD["/dashboard/labour\n(Overview)"]
         LD_PROFILE["/dashboard/labour/profile"]
         LD_APPS["/dashboard/labour/applications"]
     end
 
-    subgraph Contractor_Dashboard ["🏢 Contractor Dashboard"]
+    subgraph Contractor_Dashboard [" Contractor Dashboard"]
         CD["/dashboard/contractor\n(Overview)"]
         CD_JOBS["/dashboard/contractor/jobs"]
         CD_POST["/dashboard/contractor/post-job"]
     end
 
-    subgraph Admin_Panel ["🛡️ Admin Panel"]
+    subgraph Admin_Panel [" Admin Panel"]
         AD["/admin\n(Dashboard)"]
         AD_USERS["/admin/users"]
         AD_JOBS["/admin/jobs"]
@@ -664,5 +664,5 @@ local-labour-connect/
 ---
 
 <p align="center">
-  Built with ❤️ for connecting local labourers with opportunities
+  Built with ❤️ for connecting LabourLink with opportunities
 </p>
