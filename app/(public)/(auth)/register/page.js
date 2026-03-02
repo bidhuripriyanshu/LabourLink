@@ -10,7 +10,6 @@ const ROLES = [
     value: "LABOUR",
     label: "I'm a worker",
     desc: "Find local jobs near you",
-    emoji: "👷",
     gradient: "from-indigo-600 to-violet-600",
     ring: "ring-indigo-500/30",
     border: "border-indigo-500",
@@ -20,7 +19,6 @@ const ROLES = [
     value: "CONTRACTOR",
     label: "I'm a contractor",
     desc: "Hire skilled workers",
-    emoji: "🏗️",
     gradient: "from-emerald-600 to-teal-600",
     ring: "ring-emerald-500/30",
     border: "border-emerald-500",
@@ -100,7 +98,7 @@ function RegisterForm() {
                 </div>
               )}
 
-              {/* Role selector */}
+             
               <div className="space-y-2">
                 <span className="text-xs font-medium text-slate-600">
                   I am a
@@ -131,7 +129,7 @@ function RegisterForm() {
                 </div>
               </div>
 
-              {/* Name */}
+            
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="name">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
@@ -148,7 +146,7 @@ function RegisterForm() {
                 />
               </div>
 
-              {/* Phone */}
+            
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="phone">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
