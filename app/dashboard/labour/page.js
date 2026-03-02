@@ -1,10 +1,12 @@
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { prisma } from "../../../lib/prisma";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import { recomputeAverageRatingForUser } from "../../../lib/reviews";
+import LabourDashboardClient from "./LabourDashboardClient";
 
+/* ── Server actions ────────────────────────────────────────────────── */
 
 async function upsertLabourProfile(formData) {
   "use server";
@@ -40,6 +42,54 @@ async function upsertLabourProfile(formData) {
   revalidatePath("/dashboard/labour");
 }
 
+async function reviewContractor(formData) {
+  "use server";
+  const session = await getServerSession(authOptions);
+  if (!session?.user || session.user.role !== "LABOUR") redirect("/login");
+
+  const jobId = formData.get("jobId")?.toString();
+  const revieweeId = formData.get("revieweeId")?.toString();
+  const ratingStr = formData.get("rating")?.toString();
+  const comment = formData.get("comment")?.toString().trim() || null;
+
+  const rating = Number.parseInt(ratingStr ?? "", 10);
+  if (!jobId || !revieweeId || Number.isNaN(rating) || rating < 1 || rating > 5) return;
+
+  const app = await prisma.application.findFirst({
+    where: {
+      jobId,
+      labourId: session.user.id,
+      status: "ACCEPTED",
+      job: { contractorId: revieweeId, status: "CLOSED" },
+    },
+    include: { job: true },
+  });
+  if (!app) return;
+
+  await prisma.review.upsert({
+    where: {
+      jobId_reviewerId_revieweeId: {
+        jobId,
+        reviewerId: session.user.id,
+        revieweeId,
+      },
+    },
+    update: { rating, comment },
+    create: {
+      jobId,
+      reviewerId: session.user.id,
+      revieweeId,
+      rating,
+      comment,
+    },
+  });
+
+  await recomputeAverageRatingForUser(revieweeId);
+  revalidatePath("/dashboard/labour");
+}
+
+/* ── Page component ────────────────────────────────────────────────── */
+
 export default async function LabourDashboardPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user || session.user.role !== "LABOUR") redirect("/login");
@@ -55,138 +105,38 @@ export default async function LabourDashboardPage() {
         job: {
           include: {
             contractor: true,
+            reviews: {
+              where: { reviewerId: session.user.id },
+            },
           },
         },
       },
     }),
   ]);
 
+  // Fetch recommended jobs — match by city/skill, exclude already applied
+  const appliedJobIds = applications.map((a) => a.jobId);
+  const recommendedJobs = await prisma.job.findMany({
+    where: {
+      status: "OPEN",
+      id: { notIn: appliedJobIds.length > 0 ? appliedJobIds : undefined },
+      OR: [
+        profile?.skill ? { skillRequired: profile.skill } : {},
+        session.user.city ? { city: session.user.city } : {},
+      ].filter((o) => Object.keys(o).length > 0),
+    },
+    orderBy: { createdAt: "desc" },
+    take: 8,
+  });
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Labour Dashboard</h1>
-        <p className="mt-1 text-slate-500">Welcome, {session.user.name}</p>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Your profile</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form action={upsertLabourProfile} className="space-y-3">
-              <div className="space-y-1">
-                <label className="block text-sm font-medium text-slate-700" htmlFor="skill">
-                  Primary skill
-                </label>
-                <input
-                  id="skill"
-                  name="skill"
-                  defaultValue={profile?.skill ?? ""}
-                  required
-                  className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  placeholder="e.g. Mason, Painter, Electrician"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="block text-sm font-medium text-slate-700" htmlFor="experience">
-                  Experience (years)
-                </label>
-                <input
-                  id="experience"
-                  name="experience"
-                  type="number"
-                  min={0}
-                  defaultValue={profile?.experience ?? 0}
-                  required
-                  className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="block text-sm font-medium text-slate-700" htmlFor="city">
-                  City
-                </label>
-                <input
-                  id="city"
-                  name="city"
-                  defaultValue={session.user.city ?? ""}
-                  required
-                  className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                  placeholder="e.g. Jaipur"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
-              >
-                Save profile
-              </button>
-              {profile ? (
-                <p className="text-xs text-slate-500">Profile saved. This helps contractors find you.</p>
-              ) : (
-                <p className="text-xs text-slate-500">
-                  Fill this once so you can be matched with the right jobs.
-                </p>
-              )}
-            </form>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Browse jobs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-slate-500">
-              Find work in your city that matches your skill.
-            </p>
-            <a
-              href="/jobs"
-              className="mt-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
-            >
-              Open jobs list
-            </a>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold text-slate-900">Your applications</h2>
-        <p className="mt-1 text-sm text-slate-500">
-          Track which jobs are pending, accepted, or rejected. Contractor contact is shown when
-          accepted.
-        </p>
-
-        {applications.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-500">
-            You have not applied to any jobs yet. Browse jobs to get started.
-          </p>
-        ) : (
-          <div className="mt-4 space-y-3">
-            {applications.map((app) => (
-              <Card key={app.id}>
-                <CardHeader>
-                  <CardTitle className="text-base">{app.job.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-slate-600">
-                    {app.job.city} • {app.job.skillRequired} • ₹{app.job.wage}/day
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Status: {app.status.charAt(0) + app.status.slice(1).toLowerCase()}
-                  </p>
-                  {app.status === "ACCEPTED" && (
-                    <p className="mt-2 text-xs text-slate-700">
-                      Contractor contact: {app.job.contractor.name} ({app.job.contractor.phone}) —{" "}
-                      {app.job.contractor.city}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+    <LabourDashboardClient
+      session={session}
+      profile={profile}
+      applications={applications}
+      recommendedJobs={recommendedJobs}
+      upsertAction={upsertLabourProfile}
+      reviewAction={reviewContractor}
+    />
   );
 }

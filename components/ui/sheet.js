@@ -59,15 +59,15 @@ export function SheetContent({ children, side = "left", title }) {
         aria-modal="true"
         aria-label={title || "Navigation menu"}
         className={cn(
-          "fixed top-0 z-50 flex h-full w-[min(20rem,85vw)] flex-col bg-slate-50 shadow-2xl transition-transform duration-300 ease-out md:hidden",
+          "fixed top-0 z-50 flex h-full w-[min(20rem,85vw)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out md:hidden",
           side === "left"
             ? "left-0"
             : "right-0",
           open
             ? "translate-x-0"
             : side === "left"
-            ? "-translate-x-full"
-            : "translate-x-full"
+              ? "-translate-x-full"
+              : "translate-x-full"
         )}
       >
         {children}

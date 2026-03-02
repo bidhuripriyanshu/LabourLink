@@ -1,5 +1,3 @@
-// Dashboard layout - No Navbar (overrides root layout)
 export default function AdminLayout({ children }) {
-    return <>{children}</>;
-  }
-  
+    return <div>{children}</div>;
+}   

@@ -19,7 +19,7 @@ function MobileNavContent() {
   ];
 
   return (
-    <div className="flex h-full flex-col bg-slate-50">
+    <div className="flex h-full flex-col bg-gradient-to-b from-slate-50 to-white">
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
         <span className="text-sm font-semibold text-slate-900">Menu</span>
         <button
@@ -37,7 +37,7 @@ function MobileNavContent() {
             key={href}
             href={href}
             onClick={close}
-            className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-white hover:text-indigo-600"
+            className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
           >
             {label}
           </a>
@@ -72,15 +72,16 @@ function MobileNavContent() {
 export default function Navbar() {
   const { data: session } = useSession();
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+        {/* Left — Logo */}
         <a href="/" className="flex items-center gap-2">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white shadow-sm">
             LL
           </span>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-slate-900 sm:text-base">
-            LabourLink
+              LabourLink
             </span>
             <span className="text-[11px] text-slate-500 sm:text-xs">
               Hire local. Work local.
@@ -88,19 +89,21 @@ export default function Navbar() {
           </div>
         </a>
 
-        <div className="flex items-center gap-3">
-          <NavigationMenu>
-            <NavigationMenuItem>
-              <NavigationMenuLink href="/jobs">Jobs</NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink href="#how-it-works">How it works</NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink href="#about">About</NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenu>
+        {/* Center — Nav links (hidden on mobile) */}
+        <NavigationMenu className="hidden md:flex">
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/jobs">Jobs</NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#how-it-works">How it works</NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#about">About</NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenu>
 
+        {/* Right — Auth buttons (desktop) + Hamburger (mobile) */}
+        <div className="flex items-center gap-2">
           <div className="hidden items-center gap-2 md:flex">
             {session?.user ? (
               <>
@@ -136,4 +139,3 @@ export default function Navbar() {
     </header>
   );
 }
-
