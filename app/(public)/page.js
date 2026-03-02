@@ -89,6 +89,7 @@ const CITIES = [
   "Ahmedabad",
   "Kolkata",
   "Lucknow",
+  "Bhopal",
 ];
 
 const HOW_IT_WORKS = [
@@ -172,7 +173,7 @@ const FAQ = [
   },
 ];
 
-/* ─── component ──────────────────────────────────────────────────────── */
+
 export default function Home() {
   const { openItem, setOpenItem } = useAccordionState("q1");
   const [feedbacks, setFeedbacks] = useState(FALLBACK_TESTIMONIALS);
@@ -197,11 +198,9 @@ export default function Home() {
   return (
     <div className="bg-white">
       <main className="overflow-hidden">
-        {/* ═══════════════════════════════════════════════════════════
-            HERO SECTION
-        ═══════════════════════════════════════════════════════════ */}
+      
         <section className="relative bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 pb-20 pt-12 sm:pb-28 sm:pt-16">
-          {/* dot pattern */}
+         
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.07] mix-blend-overlay"
             style={{
@@ -210,7 +209,7 @@ export default function Home() {
               backgroundSize: "32px 32px",
             }}
           />
-          {/* soft glow */}
+          
           <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
 
           <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
@@ -233,10 +232,10 @@ export default function Home() {
                 start earning today.
               </p>
 
-              {/* ── Search bar ──────────────────────────────────── */}
+             
               <div className="mt-8 w-full max-w-2xl">
                 <div className="flex flex-col gap-2 rounded-2xl bg-white/10 p-2 backdrop-blur-md sm:flex-row sm:items-center sm:rounded-full sm:p-1.5">
-                  {/* Skill dropdown */}
+              
                   <div className="relative flex-1">
                     <Wrench className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <select
@@ -275,11 +274,11 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* ── Social proof stats ────────────────────────── */}
+       
               <div className="mt-10 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                 {[
-                  { value: "500+", label: "Workers", icon: Users },
-                  { value: "120+", label: "Contractors", icon: Building2 },
+                  { value: "50+", label: "Workers", icon: Users },
+                  { value: "20+", label: "Contractors", icon: Building2 },
                   { value: "10+", label: "Cities", icon: MapPin },
                   { value: `${avgRating}/5`, label: "Avg Rating", icon: Star },
                 ].map((stat) => (
@@ -301,9 +300,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            FEATURED SKILLS
-        ═══════════════════════════════════════════════════════════ */}
         <section className="relative z-10 -mt-10 mx-auto max-w-5xl px-4 sm:-mt-12 sm:px-6">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4">
             {SKILLS.map((skill) => (
@@ -328,9 +324,7 @@ export default function Home() {
         {/* spacer */}
         <div className="h-16 sm:h-20" />
 
-        {/* ═══════════════════════════════════════════════════════════
-            TRUST SECTION — TESTIMONIALS
-        ═══════════════════════════════════════════════════════════ */}
+        
         <section className="mx-auto max-w-5xl px-4 sm:px-6">
           <Card className="space-y-5 border-0 px-5 py-7 shadow-lg shadow-slate-200/40 sm:px-8 sm:py-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -413,9 +407,7 @@ export default function Home() {
 
         <div className="h-16 sm:h-20" />
 
-        {/* ═══════════════════════════════════════════════════════════
-            HOW IT WORKS — 3 STEPS
-        ═══════════════════════════════════════════════════════════ */}
+        
         <section
           id="how-it-works"
           className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6"
@@ -460,9 +452,6 @@ export default function Home() {
 
         <div className="h-16 sm:h-20" />
 
-        {/* ═══════════════════════════════════════════════════════════
-            WHY CHOOSE LABOURLINK — FEATURES
-        ═══════════════════════════════════════════════════════════ */}
         <section className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6">
           <div className="text-center">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
@@ -495,9 +484,7 @@ export default function Home() {
 
         <div className="h-16 sm:h-20" />
 
-        {/* ═══════════════════════════════════════════════════════════
-            CITIES WE SERVE
-        ═══════════════════════════════════════════════════════════ */}
+      
         <section className="bg-slate-50/80 py-12 sm:py-16">
           <div className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6">
             <div className="text-center">
@@ -523,9 +510,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            ROLES SECTION
-        ═══════════════════════════════════════════════════════════ */}
+      
         <section className="mx-auto max-w-5xl space-y-6 px-4 py-16 sm:px-6 sm:py-20">
           <div className="text-center">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
@@ -597,9 +582,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            ABOUT SECTION
-        ═══════════════════════════════════════════════════════════ */}
+       
         <section
           id="about"
           className="bg-slate-50/80 py-12 sm:py-16"
@@ -651,9 +634,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            FAQ
-        ═══════════════════════════════════════════════════════════ */}
+       
         <section className="mx-auto max-w-5xl space-y-6 px-4 py-16 sm:px-6 sm:py-20">
           <div className="text-center">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
@@ -697,9 +678,7 @@ export default function Home() {
           </Card>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════
-            FINAL CTA
-        ═══════════════════════════════════════════════════════════ */}
+        
         <section className="px-4 pb-16 sm:px-6 sm:pb-20">
           <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 px-6 py-10 shadow-2xl shadow-indigo-500/20 sm:px-12 sm:py-14">
             {/* subtle glow */}
