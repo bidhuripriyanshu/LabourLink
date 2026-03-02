@@ -79,15 +79,10 @@ const SKILLS = [
 ];
 
 const CITIES = [
-  "Mumbai",
-  "Delhi",
-  "Bangalore",
+  "Indore",
+  "Ujjain"
   "Jaipur",
-  "Pune",
-  "Hyderabad",
-  "Chennai",
   "Ahmedabad",
-  "Kolkata",
   "Lucknow",
   "Bhopal",
 ];
@@ -279,7 +274,7 @@ export default function Home() {
                 {[
                   { value: "50+", label: "Workers", icon: Users },
                   { value: "20+", label: "Contractors", icon: Building2 },
-                  { value: "10+", label: "Cities", icon: MapPin },
+                  { value: "5+", label: "Cities", icon: MapPin },
                   { value: `${avgRating}/5`, label: "Avg Rating", icon: Star },
                 ].map((stat) => (
                   <div
