@@ -80,7 +80,7 @@ const SKILLS = [
 
 const CITIES = [
   "Indore",
-  "Ujjain"
+  "Ujjain",
   "Jaipur",
   "Ahmedabad",
   "Lucknow",
