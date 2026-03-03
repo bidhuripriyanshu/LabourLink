@@ -38,7 +38,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-/* ─── data ──────────────────────────────────────────────────────────── */
+
 
 const FALLBACK_TESTIMONIALS = [
   {
@@ -256,7 +256,7 @@ export default function Home() {
                       className="w-full rounded-xl bg-white py-3 pl-10 pr-4 text-sm text-slate-700 shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 sm:rounded-full"
                     />
                   </div>
-                  {/* CTA */}
+                 
                   <Button
                     as="a"
                     href="/jobs"
@@ -272,8 +272,8 @@ export default function Home() {
        
               <div className="mt-10 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                 {[
-                  { value: "50+", label: "Workers", icon: Users },
-                  { value: "20+", label: "Contractors", icon: Building2 },
+                  { value: "30+", label: "Workers", icon: Users },
+                  { value: "10+", label: "Contractors", icon: Building2 },
                   { value: "5+", label: "Cities", icon: MapPin },
                   { value: `${avgRating}/5`, label: "Avg Rating", icon: Star },
                 ].map((stat) => (
@@ -327,7 +327,7 @@ export default function Home() {
                 <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
                   {totalFeedbacks > 0
                     ? `Trusted by ${totalFeedbacks}+ users`
-                    : "Trusted by 500+ workers and contractors"}
+                    : "Trusted by 100+ workers and contractors"}
                 </h2>
                 <p className="text-sm text-slate-500">
                   Real stories from real people using LabourLink.
@@ -420,7 +420,6 @@ export default function Home() {
           </div>
 
           <div className="relative grid gap-6 sm:grid-cols-3">
-            {/* connecting line (desktop only) */}
             <div className="pointer-events-none absolute left-[16.66%] right-[16.66%] top-[52px] hidden h-0.5 bg-gradient-to-r from-indigo-200 via-violet-200 to-indigo-200 sm:block" />
 
             {HOW_IT_WORKS.map((item) => (
