@@ -19,7 +19,7 @@ function MobileNavContent() {
   ];
 
   return (
-    <div className="flex h-full flex-col bg-gradient-to-b from-slate-50 to-white">
+    <div className="flex h-full flex-col bg-gradient-to-b from-white to-indigo-50">
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
         <span className="text-sm font-semibold text-slate-900">Menu</span>
         <button
@@ -74,7 +74,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Left — Logo */}
+      
         <a href="/" className="flex items-center gap-2">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white shadow-sm">
             LL
@@ -89,7 +89,7 @@ export default function Navbar() {
           </div>
         </a>
 
-        {/* Center — Nav links (hidden on mobile) */}
+      
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuItem>
             <NavigationMenuLink href="/jobs">Jobs</NavigationMenuLink>
@@ -102,7 +102,7 @@ export default function Navbar() {
           </NavigationMenuItem>
         </NavigationMenu>
 
-        {/* Right — Auth buttons (desktop) + Hamburger (mobile) */}
+      
         <div className="flex items-center gap-2">
           <div className="hidden items-center gap-2 md:flex">
             {session?.user ? (
