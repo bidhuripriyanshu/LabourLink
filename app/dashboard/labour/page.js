@@ -6,7 +6,6 @@ import { prisma } from "../../../lib/prisma";
 import { recomputeAverageRatingForUser } from "../../../lib/reviews";
 import LabourDashboardClient from "./LabourDashboardClient";
 
-/* ── Server actions ────────────────────────────────────────────────── */
 
 async function upsertLabourProfile(formData) {
   "use server";
@@ -88,7 +87,7 @@ async function reviewContractor(formData) {
   revalidatePath("/dashboard/labour");
 }
 
-/* ── Page component ────────────────────────────────────────────────── */
+
 
 export default async function LabourDashboardPage() {
   const session = await getServerSession(authOptions);
@@ -115,6 +114,7 @@ export default async function LabourDashboardPage() {
   ]);
 
   // Fetch recommended jobs — match by city/skill, exclude already applied
+  
   const appliedJobIds = applications.map((a) => a.jobId);
   const recommendedJobs = await prisma.job.findMany({
     where: {
