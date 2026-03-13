@@ -2,9 +2,9 @@ import "./globals.css";
 import Providers from "../components/SessionProvider";
 
 export const metadata = {
-  title: "Local Labour Connect",
+  title: "LabourLink",
   description:
-    "Local Labour Connect is a platform for connecting daily wage labourers with local contractors.",
+    "LabourLink is a platform for connecting daily wage labourers with local contractors.",
 };
 
 export default function RootLayout({ children }) {
