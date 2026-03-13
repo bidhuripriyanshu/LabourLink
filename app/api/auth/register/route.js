@@ -1,7 +1,4 @@
-/**
- * Phase 2 — Registration API
- * Creates user with hashed password. Role: LABOUR | CONTRACTOR
- */
+
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "../../../../lib/prisma";
@@ -27,9 +24,16 @@ export async function POST(request) {
       );
     }
 
-    if (password.length < 6) {
+     if (password.length < 6) {
       return NextResponse.json(
         { error: "Password must be at least 6 characters." },
+        { status: 400 }
+      );
+    }
+    
+    if ( phone.length === 10) {
+      return NextResponse.json(
+        { error: "Phone number must be at 10 Digits." },
         { status: 400 }
       );
     }
