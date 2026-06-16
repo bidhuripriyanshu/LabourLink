@@ -4,12 +4,14 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent } from "../../../../components/ui/card";
+import { useT } from "../../../../lib/i18n/LanguageContext";
+import LangToggle from "../../../../components/LangToggle";
 
 const ROLES = [
   {
     value: "LABOUR",
-    label: "I'm a worker",
-    desc: "Find local jobs near you",
+    labelKey: "register.worker",
+    descKey: "register.workerDesc",
     gradient: "from-indigo-600 to-violet-600",
     ring: "ring-indigo-500/30",
     border: "border-indigo-500",
@@ -17,8 +19,8 @@ const ROLES = [
   },
   {
     value: "CONTRACTOR",
-    label: "I'm a contractor",
-    desc: "Hire skilled workers",
+    labelKey: "register.contractor",
+    descKey: "register.contractorDesc",
     gradient: "from-emerald-600 to-teal-600",
     ring: "ring-emerald-500/30",
     border: "border-emerald-500",
@@ -39,6 +41,7 @@ function RegisterForm() {
   );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const t = useT();
 
   const activeRole = ROLES.find((r) => r.value === role) || ROLES[0];
 
@@ -55,14 +58,14 @@ function RegisterForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Registration failed.");
+        setError(data.error || t("register.genericError"));
         setLoading(false);
         return;
       }
 
       router.push("/login?registered=1");
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError(t("register.genericError"));
       setLoading(false);
     }
   }
@@ -81,11 +84,14 @@ function RegisterForm() {
             </span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold text-slate-900">
-            Create your account
+            {t("register.title")}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Join LabourLink — it&apos;s free and takes 2 minutes.
+            {t("register.subtitle")}
           </p>
+          <div className="mt-3 flex justify-center">
+            <LangToggle />
+          </div>
         </div>
 
         <Card className="border-0 shadow-xl shadow-slate-200/60">
@@ -101,7 +107,7 @@ function RegisterForm() {
              
               <div className="space-y-2">
                 <span className="text-xs font-medium text-slate-600">
-                  I am a
+                  {t("register.iAmA")}
                 </span>
                 <div className="grid grid-cols-2 gap-3">
                   {ROLES.map((r) => (
@@ -116,9 +122,9 @@ function RegisterForm() {
                     >
                       <span className="text-xl">{r.emoji}</span>
                       <p className="mt-1.5 text-sm font-semibold text-slate-900">
-                        {r.label}
+                        {t(r.labelKey)}
                       </p>
-                      <p className="text-[11px] text-slate-500">{r.desc}</p>
+                      <p className="text-[11px] text-slate-500">{t(r.descKey)}</p>
                       {role === r.value && (
                         <div className="absolute right-2 top-2">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
@@ -133,14 +139,14 @@ function RegisterForm() {
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="name">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
-                  Full name
+                  {t("register.name")}
                 </label>
                 <input
                   id="name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Rakesh Kumar"
+                  placeholder={t("register.namePlaceholder")}
                   className={inputClass}
                   required
                 />
@@ -150,14 +156,14 @@ function RegisterForm() {
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="phone">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                  Phone number
+                  {t("register.phone")}
                 </label>
                 <input
                   id="phone"
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="e.g. +919876543210"
+                  placeholder={t("register.phonePlaceholder")}
                   className={inputClass}
                   required
                 />
@@ -167,14 +173,14 @@ function RegisterForm() {
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="city">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
-                  City
+                  {t("register.city")}
                 </label>
                 <input
                   id="city"
                   type="text"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  placeholder="e.g. Mumbai"
+                  placeholder={t("register.cityPlaceholder")}
                   className={inputClass}
                   required
                 />
@@ -184,14 +190,14 @@ function RegisterForm() {
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="password">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                  Password
+                  {t("register.password")}
                 </label>
                 <input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 6 characters"
+                  placeholder={t("register.passwordPlaceholder")}
                   className={inputClass}
                   required
                   minLength={6}
@@ -206,12 +212,12 @@ function RegisterForm() {
                 {loading ? (
                   <>
                     <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
-                    Creating account…
+                    {t("register.creating")}
                   </>
                 ) : (
                   <>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="19" x2="19" y1="8" y2="14" /><line x1="22" x2="16" y1="11" y2="11" /></svg>
-                    Sign up
+                    {t("register.submit")}
                   </>
                 )}
               </button>
@@ -219,24 +225,24 @@ function RegisterForm() {
 
             <div className="mt-6 flex items-center gap-3">
               <div className="h-px flex-1 bg-slate-200" />
-              <span className="text-[11px] text-slate-400">or</span>
+              <span className="text-[11px] text-slate-400">{t("common.or")}</span>
               <div className="h-px flex-1 bg-slate-200" />
             </div>
 
             <p className="mt-4 text-center text-sm text-slate-500">
-              Already have an account?{" "}
+              {t("register.haveAccount")}{" "}
               <Link
                 href="/login"
                 className="font-semibold text-indigo-600 transition hover:text-indigo-700"
               >
-                Log in
+                {t("register.loginLink")}
               </Link>
             </p>
           </CardContent>
         </Card>
 
         <p className="text-center text-[11px] text-slate-400">
-          By signing up you agree to our terms and privacy policy.
+          {t("common.termsSignup")}
         </p>
       </div>
     </div>

@@ -4,6 +4,8 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent } from "../../../../components/ui/card";
+import { useT } from "../../../../lib/i18n/LanguageContext";
+import LangToggle from "../../../../components/LangToggle";
 
 function LoginForm() {
   const [phone, setPhone] = useState("");
@@ -12,6 +14,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const t = useT();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,13 +28,13 @@ function LoginForm() {
         callbackUrl,
       });
       if (res?.error) {
-        setError("Invalid phone number or password.");
+        setError(t("login.error"));
         setLoading(false);
         return;
       }
       window.location.href = res?.url || callbackUrl;
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError(t("login.genericError"));
       setLoading(false);
     }
   }
@@ -49,11 +52,14 @@ function LoginForm() {
             </span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold text-slate-900">
-            Welcome back
+            {t("login.title")}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Log in to access your dashboard.
+            {t("login.subtitle")}
           </p>
+          <div className="mt-3 flex justify-center">
+            <LangToggle />
+          </div>
         </div>
 
         <Card className="border-0 shadow-xl shadow-slate-200/60">
@@ -69,14 +75,14 @@ function LoginForm() {
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="phone">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                  Phone number
+                  {t("login.phone")}
                 </label>
                 <input
                   id="phone"
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="e.g. +919876543210"
+                  placeholder={t("login.phonePlaceholder")}
                   className={inputClass}
                   required
                 />
@@ -85,14 +91,14 @@ function LoginForm() {
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600" htmlFor="password">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                  Password
+                  {t("login.password")}
                 </label>
                 <input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={t("login.passwordPlaceholder")}
                   className={inputClass}
                   required
                 />
@@ -106,12 +112,12 @@ function LoginForm() {
                 {loading ? (
                   <>
                     <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
-                    Signing in…
+                    {t("login.signingIn")}
                   </>
                 ) : (
                   <>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" x2="3" y1="12" y2="12" /></svg>
-                    Log in
+                    {t("login.submit")}
                   </>
                 )}
               </button>
@@ -119,24 +125,24 @@ function LoginForm() {
 
             <div className="mt-6 flex items-center gap-3">
               <div className="h-px flex-1 bg-slate-200" />
-              <span className="text-[11px] text-slate-400">or</span>
+              <span className="text-[11px] text-slate-400">{t("common.or")}</span>
               <div className="h-px flex-1 bg-slate-200" />
             </div>
 
             <p className="mt-4 text-center text-sm text-slate-500">
-              Don&apos;t have an account?{" "}
+              {t("login.noAccount")}{" "}
               <Link
                 href="/register"
                 className="font-semibold text-indigo-600 transition hover:text-indigo-700"
               >
-                Sign up for free
+                {t("login.signUpFree")}
               </Link>
             </p>
           </CardContent>
         </Card>
 
         <p className="text-center text-[11px] text-slate-400">
-          By logging in you agree to our terms and privacy policy.
+          {t("common.terms")}
         </p>
       </div>
     </div>

@@ -6,22 +6,25 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger, useSheet } from "./ui/sheet";
 import { Separator } from "./ui/separator";
 import { X, Menu } from "lucide-react";
+import LangToggle from "./LangToggle";
+import { useT } from "../lib/i18n/LanguageContext";
 
 function MobileNavContent() {
   const { setOpen } = useSheet();
   const { data: session } = useSession();
   const close = () => setOpen(false);
+  const t = useT();
 
   const navLinks = [
-    { href: "/jobs", label: "Jobs" },
-    { href: "#how-it-works", label: "How it works" },
-    { href: "#about", label: "About" },
+    { href: "/jobs", label: t("common.jobs") },
+    { href: "#how-it-works", label: t("nav.howItWorks") },
+    { href: "#about", label: t("nav.about") },
   ];
 
   return (
     <div className="flex h-full flex-col bg-gradient-to-b from-white to-indigo-50">
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4">
-        <span className="text-sm font-semibold text-slate-900">Menu</span>
+        <span className="text-sm font-semibold text-slate-900">{t("nav.menu")}</span>
         <button
           type="button"
           onClick={close}
@@ -42,24 +45,27 @@ function MobileNavContent() {
             {label}
           </a>
         ))}
+        <div className="px-3 py-2">
+          <LangToggle />
+        </div>
         <Separator className="my-3 bg-slate-200" />
         <div className="flex flex-col gap-2 px-3">
           {session?.user ? (
             <>
               <Button as="a" href={session.user.role === "LABOUR" ? "/dashboard/labour" : session.user.role === "CONTRACTOR" ? "/dashboard/contractor" : "/admin"} size="md" onClick={close} className="justify-start">
-                Dashboard
+                {t("common.dashboard")}
               </Button>
               <Button variant="ghost" size="md" onClick={() => { close(); signOut({ callbackUrl: "/" }); }} className="justify-start">
-                Logout
+                {t("common.logout")}
               </Button>
             </>
           ) : (
             <>
               <Button as="a" href="/login" variant="ghost" size="md" onClick={close} className="justify-start">
-                Login
+                {t("common.login")}
               </Button>
               <Button as="a" href="/register" size="md" onClick={close} className="justify-start">
-                Sign up
+                {t("common.signup")}
               </Button>
             </>
           )}
@@ -71,6 +77,7 @@ function MobileNavContent() {
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const t = useT();
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
@@ -84,7 +91,7 @@ export default function Navbar() {
               LabourLink
             </span>
             <span className="text-[11px] text-slate-500 sm:text-xs">
-              Hire local. Work local.
+              {t("nav.tagline")}
             </span>
           </div>
         </a>
@@ -92,35 +99,38 @@ export default function Navbar() {
       
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuItem>
-            <NavigationMenuLink href="/jobs">Jobs</NavigationMenuLink>
+            <NavigationMenuLink href="/jobs">{t("common.jobs")}</NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="#how-it-works">How it works</NavigationMenuLink>
+            <NavigationMenuLink href="#how-it-works">{t("nav.howItWorks")}</NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="#about">About</NavigationMenuLink>
+            <NavigationMenuLink href="#about">{t("nav.about")}</NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenu>
 
       
         <div className="flex items-center gap-2">
+          <div className="hidden md:block">
+            <LangToggle />
+          </div>
           <div className="hidden items-center gap-2 md:flex">
             {session?.user ? (
               <>
                 <Button as="a" href={session.user.role === "LABOUR" ? "/dashboard/labour" : session.user.role === "CONTRACTOR" ? "/dashboard/contractor" : "/admin"} variant="ghost" size="sm">
-                  Dashboard
+                  {t("common.dashboard")}
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: "/" })}>
-                  Logout
+                  {t("common.logout")}
                 </Button>
               </>
             ) : (
               <>
                 <Button as="a" href="/login" variant="ghost" size="sm">
-                  Login
+                  {t("common.login")}
                 </Button>
                 <Button as="a" href="/register" size="sm">
-                  Sign up
+                  {t("common.signup")}
                 </Button>
               </>
             )}

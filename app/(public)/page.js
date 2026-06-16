@@ -38,6 +38,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import { useT } from "../../lib/i18n/LanguageContext";
 
 
 const FALLBACK_TESTIMONIALS = [
@@ -71,12 +72,14 @@ const FALLBACK_TESTIMONIALS = [
 ];
 
 const SKILLS = [
-  { name: "Painter", icon: Paintbrush, color: "from-orange-500 to-amber-500", bg: "bg-orange-50" },
-  { name: "Electrician", icon: Plug, color: "from-yellow-500 to-amber-600", bg: "bg-yellow-50" },
-  { name: "Mason", icon: Hammer, color: "from-indigo-500 to-violet-500", bg: "bg-indigo-50" },
-  { name: "Plumber", icon: Droplets, color: "from-sky-500 to-cyan-500", bg: "bg-sky-50" },
-  { name: "Cleaner", icon: Sparkles, color: "from-emerald-500 to-teal-500", bg: "bg-emerald-50" },
+  { nameKey: "landing.skill.painter", icon: Paintbrush, color: "from-orange-500 to-amber-500", bg: "bg-orange-50" },
+  { nameKey: "landing.skill.electrician", icon: Plug, color: "from-yellow-500 to-amber-600", bg: "bg-yellow-50" },
+  { nameKey: "landing.skill.mason", icon: Hammer, color: "from-indigo-500 to-violet-500", bg: "bg-indigo-50" },
+  { nameKey: "landing.skill.plumber", icon: Droplets, color: "from-sky-500 to-cyan-500", bg: "bg-sky-50" },
+  { nameKey: "landing.skill.cleaner", icon: Sparkles, color: "from-emerald-500 to-teal-500", bg: "bg-emerald-50" },
 ];
+
+const SKILL_VALUES = ["Painter", "Electrician", "Mason", "Plumber", "Cleaner"];
 
 const CITIES = [
   "Indore",
@@ -86,93 +89,50 @@ const CITIES = [
   "Bhopal",
 ];
 
-const HOW_IT_WORKS = [
-  {
-    step: 1,
-    icon: UserRoundCheck,
-    title: "Create your profile",
-    desc: "Add your skills, experience, and city once to build your digital work identity. It takes less than 2 minutes.",
-  },
-  {
-    step: 2,
-    icon: BriefcaseBusiness,
-    title: "Post or find jobs",
-    desc: "Contractors post local work with clear wage details. Labourers browse and apply in a few taps — no middlemen.",
-  },
-  {
-    step: 3,
-    icon: Workflow,
-    title: "Connect & earn",
-    desc: "Track applications, get accepted, and start working. Build your reputation with ratings and reviews.",
-  },
-];
-
-const FEATURES = [
-  {
-    icon: Shield,
-    title: "Verified & trusted",
-    desc: "Admin-verified profiles and ratings ensure only genuine workers and contractors.",
-  },
-  {
-    icon: MapPin,
-    title: "Hyperlocal matching",
-    desc: "Find work walking distance from you. City and skill-based search tuned for local hiring.",
-  },
-  {
-    icon: Smartphone,
-    title: "Works on any phone",
-    desc: "Mobile-first UI designed for low-end smartphones with large buttons and simple navigation.",
-  },
-  {
-    icon: Zap,
-    title: "Zero commission",
-    desc: "No middlemen, no cuts. Workers and contractors connect directly and keep 100% of earnings.",
-  },
-  {
-    icon: Globe2,
-    title: "Hindi & English ready",
-    desc: "Built for India's workforce with bilingual support for wider accessibility.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Grow your reputation",
-    desc: "Earn ratings, build a track record, and get recommended to more contractors over time.",
-  },
-];
-
-const FAQ = [
-  {
-    id: "q1",
-    question: "Is registration free?",
-    answer:
-      "Yes. Creating a labour or contractor account is completely free. In the future, some advanced features may be paid, but basic features will always remain free.",
-  },
-  {
-    id: "q2",
-    question: "How do I contact a worker or contractor?",
-    answer:
-      "Once an application is accepted, contact details are shared inside the dashboard so you can call or message directly. No middlemen involved.",
-  },
-  {
-    id: "q3",
-    question: "Is there any middleman or commission?",
-    answer:
-      "No. LabourLink is designed to connect workers and contractors directly, without local middlemen taking a cut of your hard-earned money.",
-  },
-  {
-    id: "q4",
-    question: "Can I post multiple jobs?",
-    answer:
-      "Yes. Contractors can post multiple open jobs at the same time and manage applicants separately for each job from their dashboard.",
-  },
-];
-
 
 export default function Home() {
   const { openItem, setOpenItem } = useAccordionState("q1");
   const [feedbacks, setFeedbacks] = useState(FALLBACK_TESTIMONIALS);
   const [avgRating, setAvgRating] = useState(4.8);
   const [totalFeedbacks, setTotalFeedbacks] = useState(0);
+  const t = useT();
+
+  const HOW_IT_WORKS = [
+    {
+      step: 1,
+      icon: UserRoundCheck,
+      title: t("landing.howItWorks.step1.title"),
+      desc: t("landing.howItWorks.step1.desc"),
+    },
+    {
+      step: 2,
+      icon: BriefcaseBusiness,
+      title: t("landing.howItWorks.step2.title"),
+      desc: t("landing.howItWorks.step2.desc"),
+    },
+    {
+      step: 3,
+      icon: Workflow,
+      title: t("landing.howItWorks.step3.title"),
+      desc: t("landing.howItWorks.step3.desc"),
+    },
+  ];
+
+  const FEATURES = [
+    { icon: Shield, title: t("landing.features.verified.title"), desc: t("landing.features.verified.desc") },
+    { icon: MapPin, title: t("landing.features.hyperlocal.title"), desc: t("landing.features.hyperlocal.desc") },
+    { icon: Smartphone, title: t("landing.features.mobile.title"), desc: t("landing.features.mobile.desc") },
+    { icon: Zap, title: t("landing.features.zero.title"), desc: t("landing.features.zero.desc") },
+    { icon: Globe2, title: t("landing.features.language.title"), desc: t("landing.features.language.desc") },
+    { icon: TrendingUp, title: t("landing.features.reputation.title"), desc: t("landing.features.reputation.desc") },
+  ];
+
+  const FAQ = [
+    { id: "q1", question: t("landing.faq.q1"), answer: t("landing.faq.a1") },
+    { id: "q2", question: t("landing.faq.q2"), answer: t("landing.faq.a2") },
+    { id: "q3", question: t("landing.faq.q3"), answer: t("landing.faq.a3") },
+    { id: "q4", question: t("landing.faq.q4"), answer: t("landing.faq.a4") },
+  ];
 
   useEffect(() => {
     fetch("/api/feedback")
@@ -210,20 +170,18 @@ export default function Home() {
             <div className="flex flex-col items-center text-center">
               <Badge className="border-white/20 bg-white/10 text-white backdrop-blur-sm">
                 <Sparkles className="mr-1.5 h-3 w-3" />
-                No middlemen · No commission · 100% free
+                {t("landing.badge")}
               </Badge>
 
               <h1 className="mt-6 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
-                Find Local Work in Minutes —{" "}
+                {t("landing.title")}
                 <span className="bg-gradient-to-r from-amber-300 to-orange-300 bg-clip-text text-transparent">
-                  No Middlemen.
+                  {t("landing.titleHighlight")}
                 </span>
               </h1>
 
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-indigo-100 sm:text-base">
-                LabourLink connects daily‑wage workers with trusted local
-                contractors. Search by skill and city, apply in one tap, and
-                start earning today.
+                {t("landing.subtitle")}
               </p>
 
              
@@ -237,11 +195,11 @@ export default function Home() {
                       defaultValue=""
                     >
                       <option value="" disabled>
-                        Select skill…
+                        {t("landing.selectSkill")}
                       </option>
-                      {SKILLS.map((s) => (
-                        <option key={s.name} value={s.name}>
-                          {s.name}
+                      {SKILLS.map((s, i) => (
+                        <option key={SKILL_VALUES[i]} value={SKILL_VALUES[i]}>
+                          {t(s.nameKey)}
                         </option>
                       ))}
                     </select>
@@ -251,7 +209,7 @@ export default function Home() {
                     <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <input
                       type="text"
-                      placeholder="Enter your city…"
+                      placeholder={t("landing.enterCity")}
                       className="w-full rounded-xl bg-white py-3 pl-10 pr-4 text-sm text-slate-700 shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 sm:rounded-full"
                     />
                   </div>
@@ -263,7 +221,7 @@ export default function Home() {
                     className="gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-6 text-white shadow-lg shadow-orange-500/25 hover:shadow-xl hover:brightness-110 sm:rounded-full"
                   >
                     <Search className="h-4 w-4" />
-                    Find Work Near Me
+                    {t("landing.findWork")}
                   </Button>
                 </div>
               </div>
@@ -271,10 +229,10 @@ export default function Home() {
        
               <div className="mt-10 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                 {[
-                  { value: "30+", label: "Workers", icon: Users },
-                  { value: "10+", label: "Contractors", icon: Building2 },
-                  { value: "5+", label: "Cities", icon: MapPin },
-                  { value: `${avgRating}/5`, label: "Avg Rating", icon: Star },
+                  { value: "30+", label: t("landing.workers"), icon: Users },
+                  { value: "10+", label: t("landing.contractors"), icon: Building2 },
+                  { value: "5+", label: t("landing.cities"), icon: MapPin },
+                  { value: `${avgRating}/5`, label: t("landing.avgRating"), icon: Star },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -296,10 +254,10 @@ export default function Home() {
 
         <section className="relative z-10 -mt-10 mx-auto max-w-5xl px-4 sm:-mt-12 sm:px-6">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4">
-            {SKILLS.map((skill) => (
+            {SKILLS.map((skill, i) => (
               <a
-                key={skill.name}
-                href={`/jobs?skill=${encodeURIComponent(skill.name)}`}
+                key={SKILL_VALUES[i]}
+                href={`/jobs?skill=${encodeURIComponent(SKILL_VALUES[i])}`}
                 className="group flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-white px-4 py-5 shadow-lg shadow-slate-200/60 transition-all hover:-translate-y-1 hover:shadow-xl"
               >
                 <div
@@ -308,7 +266,7 @@ export default function Home() {
                   <skill.icon className="h-6 w-6 text-slate-700" />
                 </div>
                 <span className="text-sm font-semibold text-slate-800">
-                  {skill.name}
+                  {t(skill.nameKey)}
                 </span>
               </a>
             ))}
@@ -325,11 +283,11 @@ export default function Home() {
               <div className="space-y-1">
                 <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
                   {totalFeedbacks > 0
-                    ? `Trusted by ${totalFeedbacks}+ users`
-                    : "Trusted by 100+ workers and contractors"}
+                    ? t("landing.testimonials.trustedBy", { count: totalFeedbacks })
+                    : t("landing.testimonials.trustedByFallback")}
                 </h2>
                 <p className="text-sm text-slate-500">
-                  Real stories from real people using LabourLink.
+                  {t("landing.testimonials.subtitle")}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-600">
@@ -348,7 +306,7 @@ export default function Home() {
                   {avgRating}/5
                 </span>
                 <span className="text-xs text-slate-400">
-                  average satisfaction
+                  {t("landing.testimonials.avgSatisfaction")}
                 </span>
               </div>
             </div>
@@ -408,13 +366,13 @@ export default function Home() {
         >
           <div className="text-center">
             <Badge variant="secondary" className="mx-auto">
-              Simple 3-step process
+              {t("landing.howItWorks.badge")}
             </Badge>
             <h2 className="mt-3 text-xl font-bold text-slate-900 sm:text-2xl">
-              How LabourLink Works
+              {t("landing.howItWorks.title")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              From sign-up to your first job — in minutes, not days.
+              {t("landing.howItWorks.subtitle")}
             </p>
           </div>
 
@@ -430,7 +388,7 @@ export default function Home() {
                   <item.icon className="h-6 w-6" />
                 </div>
                 <Badge className="mx-auto mt-3 text-[10px]">
-                  Step {item.step}
+                  {t("landing.howItWorks.step")} {item.step}
                 </Badge>
                 <h3 className="mt-3 text-base font-semibold text-slate-900">
                   {item.title}
@@ -448,11 +406,10 @@ export default function Home() {
         <section className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6">
           <div className="text-center">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
-              Why Choose LabourLink?
+              {t("landing.features.title")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Built for India&apos;s blue-collar workforce — simple, fast, and
-              fair.
+              {t("landing.features.subtitle")}
             </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -482,10 +439,10 @@ export default function Home() {
           <div className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6">
             <div className="text-center">
               <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
-                Cities We Serve
+                {t("landing.cities.title")}
               </h2>
               <p className="mt-1 text-sm text-slate-500">
-                Growing fast across India — your city might already be here.
+                {t("landing.cities.subtitle")}
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -507,42 +464,42 @@ export default function Home() {
         <section className="mx-auto max-w-5xl space-y-6 px-4 py-16 sm:px-6 sm:py-20">
           <div className="text-center">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
-              Built for Everyone
+              {t("landing.roles.title")}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Three roles, one platform.
+              {t("landing.roles.subtitle")}
             </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-3">
             {[
               {
-                title: "For Labour",
+                title: t("landing.roles.labour.title"),
                 gradient: "from-indigo-600 to-violet-600",
                 items: [
-                  "Create your digital work profile",
-                  "See nearby jobs matched to your skill",
-                  "Apply and track application status",
-                  "Build reputation with ratings",
+                  t("landing.roles.labour.item1"),
+                  t("landing.roles.labour.item2"),
+                  t("landing.roles.labour.item3"),
+                  t("landing.roles.labour.item4"),
                 ],
               },
               {
-                title: "For Contractors",
+                title: t("landing.roles.contractor.title"),
                 gradient: "from-emerald-600 to-teal-600",
                 items: [
-                  "Post work in minutes",
-                  "Filter workers by skill and rating",
-                  "Accept or reject applications easily",
-                  "Review workers after project ends",
+                  t("landing.roles.contractor.item1"),
+                  t("landing.roles.contractor.item2"),
+                  t("landing.roles.contractor.item3"),
+                  t("landing.roles.contractor.item4"),
                 ],
               },
               {
-                title: "For Admin",
+                title: t("landing.roles.admin.title"),
                 gradient: "from-amber-600 to-orange-600",
                 items: [
-                  "Verify genuine profiles and jobs",
-                  "Remove fake or abusive listings",
-                  "Monitor platform health & analytics",
-                  "Keep the marketplace safe and fair",
+                  t("landing.roles.admin.item1"),
+                  t("landing.roles.admin.item2"),
+                  t("landing.roles.admin.item3"),
+                  t("landing.roles.admin.item4"),
                 ],
               },
             ].map((role) => (
@@ -585,32 +542,25 @@ export default function Home() {
               <div className="grid gap-6 sm:grid-cols-[2fr,1.4fr] sm:items-start">
                 <div className="space-y-4">
                   <h2 className="text-xl font-bold text-slate-900">
-                    Why We Built LabourLink
+                    {t("landing.about.title")}
                   </h2>
                   <p className="text-sm leading-relaxed text-slate-500">
-                    Daily wage labourers often depend on middlemen or standing at
-                    physical chowks to find work. Contractors waste time making
-                    phone calls and still struggle to find verified, reliable
-                    workers on short notice.
+                    {t("landing.about.p1")}
                   </p>
                   <p className="text-sm leading-relaxed text-slate-500">
-                    LabourLink creates a lightweight, mobile-first hiring layer:
-                    one place where labourers can build a digital identity and
-                    contractors can post transparent, city-based jobs. Admins
-                    keep the platform safe by verifying profiles and removing
-                    fake listings.
+                    {t("landing.about.p2")}
                   </p>
                 </div>
                 <div className="space-y-3 rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 px-5 py-5">
                   <p className="text-sm font-semibold text-slate-900">
-                    Design principles
+                    {t("landing.about.principles")}
                   </p>
                   <ul className="space-y-2">
                     {[
-                      "Works smoothly on low-end smartphones",
-                      "Large touch targets and simple language",
-                      "Role-based dashboards, not a generic job site",
-                      "Room to grow into OTP login, maps & more",
+                      t("landing.about.principle1"),
+                      t("landing.about.principle2"),
+                      t("landing.about.principle3"),
+                      t("landing.about.principle4"),
                     ].map((p) => (
                       <li
                         key={p}
@@ -631,7 +581,7 @@ export default function Home() {
         <section className="mx-auto max-w-5xl space-y-6 px-4 py-16 sm:px-6 sm:py-20">
           <div className="text-center">
             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
-              Frequently Asked Questions
+              {t("landing.faq.title")}
             </h2>
           </div>
           <Card className="border-0 px-5 py-2 shadow-lg shadow-slate-200/40 sm:px-8">
@@ -680,12 +630,10 @@ export default function Home() {
               <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between w-full">
                 <div className="space-y-3 sm:max-w-lg">
                   <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                    Ready to Start Earning Locally?
+                    {t("landing.cta.title")}
                   </h2>
                   <p className="text-sm leading-relaxed text-indigo-100 sm:text-base">
-                    Create your profile in minutes and join a growing network of
-                    local workers and contractors in your city. No fees, no
-                    middlemen.
+                    {t("landing.cta.subtitle")}
                   </p>
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -695,7 +643,7 @@ export default function Home() {
                     size="lg"
                     className="gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 px-6 text-slate-900 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:brightness-110"
                   >
-                    Find work near me
+                    {t("landing.cta.findWork")}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                   <Button
@@ -705,7 +653,7 @@ export default function Home() {
                     variant="outline"
                     className="gap-2 rounded-xl border-white/30 bg-white/10 px-6 text-white backdrop-blur-sm hover:bg-white/20"
                   >
-                    Hire local workers
+                    {t("landing.cta.hireWorkers")}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
